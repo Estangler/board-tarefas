@@ -4,7 +4,6 @@ export type Direction = 1 | -1;
 
 export type MoveTaskPayloadType = {
   id: number;
-  currentColumn: Column;
   direction: Direction;
 };
 
@@ -31,13 +30,17 @@ export type DeleteTaskActionType = {
   payload: number;
 };
 
-export type MoveTaskType = {
+export type MoveTaskActionType = {
   type: "MOVE_TASK";
   payload: MoveTaskPayloadType;
 };
 
+export type ClearDoneActionType = {
+  type: "CLEAR_DONE";
+};
+
 export type Action =
-  | { type: "ADD_TASK"; payload: Omit<Task, "id" | "column"> }
-  | { type: "MOVE_TASK"; payload: MoveTaskPayloadType }
-  | { type: "DELETE_TASK"; payload: number }
-  | { type: "CLEAR_DONE" };
+  | AddTaskActionType
+  | DeleteTaskActionType
+  | MoveTaskActionType
+  | ClearDoneActionType;

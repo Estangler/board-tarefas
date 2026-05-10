@@ -1,9 +1,9 @@
-import type {
-  State,
-  AddTaskActionType,
-  DeleteTaskActionType,
-  Column,
-  MoveTaskType,
+import { COLUMNS } from "../../constants/columns";
+import {
+  type State,
+  type AddTaskActionType,
+  type DeleteTaskActionType,
+  type MoveTaskActionType,
 } from "../../types/board";
 
 export function addTask(state: State, action: AddTaskActionType): State {
@@ -31,21 +31,20 @@ export function clearDone(state: State): State {
   };
 }
 
-export const COLUMNS: Column[] = ["todo", "doing", "done"];
+export function moveTask(state: State, action: MoveTaskActionType): State {
+  const { id, direction } = action.payload;
+  const tasktoMove = state.tasks.find((task) => task.id === id);
 
-export function moveTask(state: State, action: MoveTaskType): State {
-  const { id, currentColumn, direction } = action.payload;
+  if (!tasktoMove) return state;
 
-  const currentColumnIndex = COLUMNS.indexOf(currentColumn);
+  const currentColumnIndex = COLUMNS.indexOf(tasktoMove.column);
 
   const nextColumnIndex = currentColumnIndex + direction;
 
   const isInvalidIndex =
     nextColumnIndex < 0 || nextColumnIndex >= COLUMNS.length;
 
-  if (isInvalidIndex) {
-    return state;
-  }
+  if (isInvalidIndex) return state;
 
   const nextColumn = COLUMNS[nextColumnIndex];
 
