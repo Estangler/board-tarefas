@@ -1,3 +1,9 @@
+import Board from "./components/Board/Board";
+
 export default function App() {
-  return <h1>Kanban!</h1>;
+  return (
+    <div>
+      <Board />
+    </div>
+  );
 }

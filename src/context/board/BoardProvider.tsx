@@ -1,8 +1,8 @@
 import { useReducer, type ReactNode } from "react";
-import { BoardContext } from "./boardContext";
 import { boardReducer } from "./boardReducer";
 import { INITIAL_STATE } from "./initialState";
 import type { Column, MoveTaskPayloadType, Task } from "../../types/board";
+import { BoardContext } from "./BoardContext";
 
 type BoardProviderProps = {
   children: ReactNode;
