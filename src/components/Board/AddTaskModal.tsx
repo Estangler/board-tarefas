@@ -15,6 +15,8 @@ export default function AddTaskModal({
 
   const [descriptionInput, setDescriptionInput] = useState<string>("");
 
+  const [error, setError] = useState(false);
+
   const [priority, setPriority] = useState<Priority>("high");
   const priorities: Priority[] = ["low", "medium", "high"];
   const prioVariant = {
@@ -41,6 +43,11 @@ export default function AddTaskModal({
 
   function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!titleInput.trim()) {
+      setError(true);
+
+      return console.error("Digite um título válido.");
+    }
     const newTask: Omit<Task, "id" | "column"> = {
       title: titleInput,
       description: descriptionInput,
