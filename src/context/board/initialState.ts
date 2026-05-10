@@ -14,7 +14,7 @@ export const INITIAL_STATE: State = {
       title: "Configurar roteamento",
       description: "React Router v6",
       priority: "medium",
-      column: "todo",
+      column: "doing",
     },
     {
       id: 3,
