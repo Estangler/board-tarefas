@@ -33,11 +33,11 @@ export function clearDone(state: State): State {
 
 export function moveTask(state: State, action: MoveTaskActionType): State {
   const { id, direction } = action.payload;
-  const tasktoMove = state.tasks.find((task) => task.id === id);
+  const taskToMove = state.tasks.find((task) => task.id === id);
 
-  if (!tasktoMove) return state;
+  if (!taskToMove) return state;
 
-  const currentColumnIndex = COLUMNS.indexOf(tasktoMove.column);
+  const currentColumnIndex = COLUMNS.indexOf(taskToMove.column);
 
   const nextColumnIndex = currentColumnIndex + direction;
 
