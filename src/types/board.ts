@@ -21,6 +21,21 @@ export type State = {
   nextId: number;
 };
 
+export type AddTaskActionType = {
+  type: "ADD_TASK";
+  payload: Omit<Task, "id" | "column">;
+};
+
+export type DeleteTaskActionType = {
+  type: "DELETE_TASK";
+  payload: number;
+};
+
+export type MoveTaskType = {
+  type: "MOVE_TASK";
+  payload: MoveTaskPayloadType;
+};
+
 export type Action =
   | { type: "ADD_TASK"; payload: Omit<Task, "id" | "column"> }
   | { type: "MOVE_TASK"; payload: MoveTaskPayloadType }
