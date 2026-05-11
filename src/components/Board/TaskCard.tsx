@@ -8,6 +8,11 @@ type TaskCardProps = {
 
 export default function TaskCard({ task }: TaskCardProps) {
   const { deleteTask, moveTask } = useBoard();
+  const prioVariant = {
+    low: "Baixa",
+    medium: "Média",
+    high: "Alta",
+  };
 
   function handleMoveTask(direction: Direction) {
     moveTask({
@@ -16,31 +21,39 @@ export default function TaskCard({ task }: TaskCardProps) {
     });
   }
   return (
-    <article className="flex flex-col border border-black">
-      <header>
+    <article className="flex flex-col mt-2 p-2 bg-gray-950/10 text-gray-50 rounded-lg backdrop-blur-sm shadow-lg shadow-olive-50/30">
+      <header className="flex justify-between items-center text-base font-semibold">
         <h2>{task.title}</h2>
-        <button onClick={() => deleteTask(task.id)}>
-          <X />
+        <button onClick={() => deleteTask(task.id)} className="cursor-pointer">
+          <X size={16} />
         </button>
       </header>
 
-      <section>
-        <p>{task.description}</p>
+      <section className="my-5">
+        <p className="text-sm">{task.description}</p>
       </section>
 
-      <footer>
-        <p>{task.priority}</p>
+      <footer className="mt-5 flex items-end justify-between">
+        <p className="text-sm w-fit border rounded-lg px-1">
+          {prioVariant[task.priority]}
+        </p>
 
-        <div>
+        <div className="flex gap-1">
           {task.column !== "todo" && (
-            <button onClick={() => handleMoveTask(-1)}>
-              <ArrowLeft />
+            <button
+              onClick={() => handleMoveTask(-1)}
+              className="bg-amber-400 p-1 rounded-lg hover:bg-amber-500"
+            >
+              <ArrowLeft size={16} />
             </button>
           )}
 
           {task.column !== "done" && (
-            <button onClick={() => handleMoveTask(1)}>
-              <ArrowRight />
+            <button
+              onClick={() => handleMoveTask(1)}
+              className="bg-amber-400 p-1 rounded-lg hover:bg-amber-500"
+            >
+              <ArrowRight size={16} />
             </button>
           )}
         </div>

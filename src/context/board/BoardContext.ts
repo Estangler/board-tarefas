@@ -6,6 +6,8 @@ type BoardContextType = {
   tasks: Task[];
   total: number;
   doneCount: number;
+  tasksdoing: number;
+  taskstodo: number;
   progress: number;
   addTask: (task: Omit<Task, "id" | "column">) => void;
   deleteTask: (id: number) => void;

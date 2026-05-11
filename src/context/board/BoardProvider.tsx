@@ -13,7 +13,9 @@ export default function BoardProvider({ children }: BoardProviderProps) {
 
   const tasks = state.tasks;
   const total = state.tasks.length;
-  const doneCount = state.tasks.filter((task) => task.column === "done").length;
+  const taskstodo = state.tasks.filter((t) => t.column === "todo").length;
+  const tasksdoing = state.tasks.filter((t) => t.column === "doing").length;
+  const doneCount = state.tasks.filter((t) => t.column === "done").length;
   const progress = total === 0 ? 0 : (doneCount / total) * 100;
 
   function addTask(task: Omit<Task, "id" | "column">) {
@@ -44,6 +46,8 @@ export default function BoardProvider({ children }: BoardProviderProps) {
         tasks,
         total,
         doneCount,
+        taskstodo,
+        tasksdoing,
         addTask,
         deleteTask,
         clearDoneTask,

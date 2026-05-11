@@ -1,13 +1,18 @@
 import { useBoard } from "../../hook/useBoard";
 
 export default function ProgressBar() {
-  const { progress } = useBoard();
+  const { progress, total, doneCount } = useBoard();
   return (
-    <div className="w-full h-4 bg-gray-950 rounded-full mt-20">
-      <div
-        className={`h-4 rounded-full bg-blue-500`}
-        style={{ width: `${progress}%` }}
-      />
+    <div className="flex gap-2 items-center justify-center mt-2 pl-4 pr-2">
+      <div className="w-full h-3 border-gray-50/20 bg-gray-800 rounded-full border-2 overflow-hidden">
+        <div
+          className={`h-3 rounded-full bg-orange-600`}
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+      <div>
+        <span>{doneCount}</span>/<span>{total}</span>
+      </div>
     </div>
   );
 }

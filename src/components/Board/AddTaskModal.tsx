@@ -2,22 +2,30 @@ import Modal from "react-modal";
 import type { Priority, Task } from "../../types/board";
 import { useState } from "react";
 import { useBoard } from "../../hook/useBoard";
+
 type AddTaskModalProps = {
   modalState: boolean;
   handleModal: () => void;
+};
+
+type FormErrors = {
+  title?: string;
 };
 
 export default function AddTaskModal({
   handleModal,
   modalState,
 }: AddTaskModalProps) {
+  const { addTask } = useBoard();
+
   const [titleInput, setTitleInput] = useState<string>("");
 
   const [descriptionInput, setDescriptionInput] = useState<string>("");
 
-  const [error, setError] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
 
   const [priority, setPriority] = useState<Priority>("high");
+
   const priorities: Priority[] = ["low", "medium", "high"];
   const prioVariant = {
     low: "Baixa",
@@ -25,10 +33,9 @@ export default function AddTaskModal({
     high: "Alta",
   };
 
-  const { addTask } = useBoard();
-
   function handleTitleValue(e: React.ChangeEvent<HTMLInputElement>) {
-    const { value } = e.target;
+    const { value, name } = e.target;
+    formValidation(name, value);
     setTitleInput(value);
   }
 
@@ -41,24 +48,43 @@ export default function AddTaskModal({
     setPriority(priority);
   }
 
+  function formValidation(name: string, value: string): boolean {
+    let errorMessage = "";
+
+    console.log(name);
+
+    if (name === "title" && !value.trim()) {
+      errorMessage = "Digite um título válido.";
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: errorMessage,
+    }));
+    return !errorMessage;
+  }
+
   function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!titleInput.trim()) {
-      setError(true);
 
-      return console.error("Digite um título válido.");
+    const isTitleValid = formValidation("title", titleInput);
+
+    if (!isTitleValid) {
+      return;
     }
+
     const newTask: Omit<Task, "id" | "column"> = {
       title: titleInput,
       description: descriptionInput,
       priority: priority,
     };
 
+    setErrors({});
     addTask(newTask);
     setTitleInput("");
     setDescriptionInput("");
-    handleModal();
     setPriority("medium");
+    handleModal();
   }
 
   return (
@@ -69,16 +95,20 @@ export default function AddTaskModal({
       overlayClassName={
         "fixed inset-0 backdrop-blur-sm flex items-center justify-center"
       }
-      className={"border p-10 rounded-2xl"}
+      className={"border p-10 rounded-2xl bg-gray-950/20"}
     >
       <form onSubmit={onSubmit} className="flex flex-col gap-10 ">
         <header>
-          <h1>Nova Tarefa</h1>
+          <h1 className="text-">Nova Tarefa</h1>
         </header>
         <label htmlFor="titleInput">
-          <p>Titulo *</p>
+          <div>
+            <p>Titulo *</p>
+            {errors.title && <span>{errors.title}</span>}
+          </div>
           <input
             type="text"
+            name="title"
             id="titleInput"
             value={titleInput}
             onChange={handleTitleValue}
