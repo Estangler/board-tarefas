@@ -24,7 +24,7 @@ export default function AddTaskModal({
 
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const [priority, setPriority] = useState<Priority>("high");
+  const [priority, setPriority] = useState<Priority>("medium");
 
   const priorities: Priority[] = ["low", "medium", "high"];
   const prioVariant = {
@@ -33,13 +33,19 @@ export default function AddTaskModal({
     high: "Alta",
   };
 
+  const priorityBgVariant = {
+    low: "bg-green-600/20 text-green-600",
+    medium: "bg-yellow-600/20 text-yellow-600",
+    high: "bg-red-600/20 text-red-600",
+  };
+
   function handleTitleValue(e: React.ChangeEvent<HTMLInputElement>) {
     const { value, name } = e.target;
     formValidation(name, value);
     setTitleInput(value);
   }
 
-  function handleDescriptionValue(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleDescriptionValue(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const { value } = e.target;
     setDescriptionInput(value);
   }
@@ -50,8 +56,6 @@ export default function AddTaskModal({
 
   function formValidation(name: string, value: string): boolean {
     let errorMessage = "";
-
-    console.log(name);
 
     if (name === "title" && !value.trim()) {
       errorMessage = "Digite um título válido.";
@@ -93,18 +97,27 @@ export default function AddTaskModal({
       onRequestClose={handleModal}
       contentLabel="Modal to add new task."
       overlayClassName={
-        "fixed inset-0 backdrop-blur-sm flex items-center justify-center"
+        "fixed inset-0 backdrop-blur-sm flex items-center justify-center w-screen"
       }
-      className={"border p-10 rounded-2xl bg-gray-950/20"}
+      className={
+        "p-10 rounded-2xl bg-body w-80 md:w-100 border border-gray-50/20"
+      }
     >
-      <form onSubmit={onSubmit} className="flex flex-col gap-10 ">
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-4 items-center text-sm"
+      >
         <header>
-          <h1 className="text-">Nova Tarefa</h1>
+          <h1 className="text-base">Nova Tarefa</h1>
         </header>
-        <label htmlFor="titleInput">
+        <label htmlFor="titleInput" className="w-full">
           <div>
             <p>Titulo *</p>
-            {errors.title && <span>{errors.title}</span>}
+            {errors.title && (
+              <p className="bg-red-600/20 text-red-600 px-4 my-1 rounded-sm h-fit text-[11px]">
+                {errors.title}
+              </p>
+            )}
           </div>
           <input
             type="text"
@@ -113,27 +126,28 @@ export default function AddTaskModal({
             value={titleInput}
             onChange={handleTitleValue}
             placeholder="Ex: Implementar autenticação"
-            className="border rounded-lg px-4 py-2"
+            className="bg-card rounded-lg px-4 py-2 outline-0 w-full"
           />
         </label>
-        <label htmlFor="descriptionInput">
-          <p>Descrição</p>
-          <input
-            type="text"
+        <label htmlFor="descriptionInput" className="w-full">
+          <p className="">Descrição</p>
+          <textarea
             id="descriptionInput"
             value={descriptionInput}
             onChange={handleDescriptionValue}
             placeholder="Detalhes opcionais..."
-            className="border rounded-lg px-4 py-2"
+            className="bg-card rounded-lg px-4 py-1 outline-0 w-full scrollbar-none"
+            maxLength={100}
           />
+          <span>{descriptionInput.length}/100</span>
         </label>
         <section>
-          <header>Prioridade.</header>
+          <header>Prioridade</header>
           <div className="flex gap-2">
             {priorities.map((prio) => (
               <button
                 key={prio}
-                className={`border rounded-xl cursor-pointer px-4 ${prio === priority && "border-2"}`}
+                className={`bg-card rounded-lg border-transparent cursor-pointer px-4 py-1 ${prio === priority && "underline"}  ${priorityBgVariant[prio]} hover:opacity-80`}
                 onClick={() => handlePriorityTask(prio)}
                 type="button"
               >
@@ -144,13 +158,12 @@ export default function AddTaskModal({
         </section>
         <footer className="flex gap-2">
           <button
-            className="border rounded-lg cursor-pointer px-4"
-            type="button"
+            className="underline rounded-lg cursor-pointer px-4 hover:opacity-80"
             onClick={handleModal}
           >
             Cancelar
           </button>
-          <button className="border rounded-lg cursor-pointer px-4">
+          <button className="bg-card rounded-lg cursor-pointer py-2 px-4 hover:opacity-80">
             Adicionar
           </button>
         </footer>

@@ -15,7 +15,7 @@ export default function Board() {
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Board de Tarefas</h1>
           <button
-            className="px-2 py-1 rounded-lg bg-orange-600 hover:bg-orange-700"
+            className="px-4 py-2 rounded-lg bg-card hover:opacity-80"
             onClick={handleModal}
           >
             Add task
@@ -24,7 +24,6 @@ export default function Board() {
         <ProgressBar />
 
         <AddTaskModal modalState={isOpen} handleModal={handleModal} />
-        <div></div>
       </header>
       <section className="grid sm:grid-cols-3 grid-cols-1 gap-2">
         {COLUMNS.map((col) => (

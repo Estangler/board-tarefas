@@ -14,6 +14,12 @@ export default function TaskCard({ task }: TaskCardProps) {
     high: "Alta",
   };
 
+  const priorityBgVariant = {
+    low: "bg-green-600/20 text-green-600",
+    medium: "bg-yellow-600/20 text-yellow-600",
+    high: "bg-red-600/20 text-red-600",
+  };
+
   function handleMoveTask(direction: Direction) {
     moveTask({
       id: task.id,
@@ -21,7 +27,7 @@ export default function TaskCard({ task }: TaskCardProps) {
     });
   }
   return (
-    <article className="flex flex-col mt-2 p-2 bg-gray-950/10 text-gray-50 rounded-lg backdrop-blur-sm shadow-lg shadow-olive-50/30">
+    <article className="flex flex-col mt-2 p-2 bg-card text-gray-50 rounded-lg">
       <header className="flex justify-between items-center text-base font-semibold">
         <h2>{task.title}</h2>
         <button onClick={() => deleteTask(task.id)} className="cursor-pointer">
@@ -30,11 +36,11 @@ export default function TaskCard({ task }: TaskCardProps) {
       </header>
 
       <section className="my-5">
-        <p className="text-sm">{task.description}</p>
+        <div className="text-sm">{task.description}</div>
       </section>
 
       <footer className="mt-5 flex items-end justify-between">
-        <p className="text-sm w-fit border rounded-lg px-1">
+        <p className={`text-sm px-0.5 ${priorityBgVariant[task.priority]}`}>
           {prioVariant[task.priority]}
         </p>
 
@@ -42,7 +48,7 @@ export default function TaskCard({ task }: TaskCardProps) {
           {task.column !== "todo" && (
             <button
               onClick={() => handleMoveTask(-1)}
-              className="bg-amber-400 p-1 rounded-lg hover:bg-amber-500"
+              className="bg-green-400 p-1 rounded-lg hover:bg-green-500"
             >
               <ArrowLeft size={16} />
             </button>
@@ -51,7 +57,7 @@ export default function TaskCard({ task }: TaskCardProps) {
           {task.column !== "done" && (
             <button
               onClick={() => handleMoveTask(1)}
-              className="bg-amber-400 p-1 rounded-lg hover:bg-amber-500"
+              className="bg-green-400 p-1 rounded-lg hover:bg-green-500"
             >
               <ArrowRight size={16} />
             </button>

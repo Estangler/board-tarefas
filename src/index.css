@@ -2,4 +2,8 @@
 
 @theme {
   --font-sans: "Google Sans", sans-serif;
+
+  --color-card: #1c1c1c;
+  --color-body: #0a0a0a;
+  --color-body-secondary: #e0e0e0;
 }
